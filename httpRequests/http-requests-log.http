@@ -1,0 +1,113 @@
+GET http://localhost:8080/articles/1234
+Authorization: Basic Thomas Passw0rt
+
+<> 2021-03-07T175308.200.txt
+
+###
+
+GET http://localhost:8080/articles/1234
+Authorization: Basic John Passw0rt
+
+<> 2021-03-07T175258.403.json
+
+###
+
+GET http://localhost:8080/hello
+Authorization: Basic John Passw0rt
+
+<> 2021-03-07T175245.200.txt
+
+###
+
+GET http://localhost:8080/articles/1234
+Authorization: Basic Thomas Passw0rt
+
+<> 2021-03-07T175202.200.txt
+
+###
+
+GET http://localhost:8080/articles/1234
+Authorization: Basic John Passw0rt
+
+<> 2021-03-07T175157.403.json
+
+###
+
+GET http://localhost:8080/orders/1234
+Authorization: Basic John Passw0rt
+
+<> 2021-03-07T175151.200.txt
+
+###
+
+GET http://localhost:8080/orders/1234
+Authorization: Basic Thomas Passw0rt
+
+<> 2021-03-07T175123.200.txt
+
+###
+
+GET http://localhost:8080/orders/1234
+Authorization: Basic Thomas Passw0rt
+
+<> 2021-03-07T175106.404.json
+
+###
+
+GET http://localhost:8080/orders/1234
+Authorization: Basic Thomas Passw0rt
+
+<> 2021-03-07T175017.404.json
+
+###
+
+GET http://localhost:8080/articles/1234
+Authorization: Basic John Passw0rt
+
+###
+
+GET http://localhost:8080/articles/1234
+Authorization: Basic Thomas Passw0rt
+
+<> 2021-03-07T174931.200.txt
+
+###
+
+GET http://localhost:8080/hello
+Authorization: Basic Thomas Passw0rt
+
+<> 2021-03-07T174845.200.txt
+
+###
+
+GET http://localhost:8080/articles/1234
+Authorization: Basic Thomas Passw0rt
+
+<> 2021-03-07T174750.200.txt
+
+###
+
+GET http://localhost:8080/articles/1234
+Authorization: Basic Thomas Passw0rt
+
+<> 2021-03-07T172818.200.txt
+
+###
+
+GET http://localhost:8080/articles/1234
+Authorization: Basic Thomas Passw0rt
+
+<> 2021-03-07T172537.500.json
+
+###
+
+GET http://localhost:8080/articles/1234
+
+<> 2021-03-07T172433.401.json
+
+###
+
+GET http://articles/1234
+
+###
+

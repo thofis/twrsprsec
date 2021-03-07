@@ -20,8 +20,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 				.authorizeRequests()
-				.anyRequest()
-				.authenticated()
+				.mvcMatchers("/articles/**").hasRole("admin")
+				.mvcMatchers("/orders/**").hasRole("user")
+				.mvcMatchers("hello").permitAll()
+				.anyRequest().denyAll()
 				.and()
 				.httpBasic();
 	}
@@ -38,7 +40,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.builder()
 				.username("Thomas")
 				.password("Passw0rt")
-				.authorities("all")
+				.roles("admin", "user")
+				.build());
+		inMemoryUserDetailsManager.createUser(User
+				.builder()
+				.username("John")
+				.password("Passw0rt")
+				.roles("user")
 				.build());
 		return inMemoryUserDetailsManager;
 	}

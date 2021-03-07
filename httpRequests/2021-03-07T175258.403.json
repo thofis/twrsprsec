@@ -1,0 +1,7 @@
+{
+  "timestamp": "2021-03-07T16:52:58.931+00:00",
+  "status": 403,
+  "error": "Forbidden",
+  "message": "Forbidden",
+  "path": "/articles/1234"
+}

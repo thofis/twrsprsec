@@ -1,0 +1,34 @@
+GET http://localhost:8080/hello
+Accept: application/json
+
+###
+GET http://localhost:8080/articles/123
+
+###
+GET http://localhost:8080/articles/123
+Authorization: Basic Thomas Passw0rt
+
+###
+GET http://localhost:8080/articles/123
+Authorization: Basic John Passw0rt
+
+###
+GET http://localhost:8080/orders/123
+
+###
+GET http://localhost:8080/orders/123
+Authorization: Basic Thomas Passw0rt
+
+###
+GET http://localhost:8080/orders/123
+Authorization: Basic John Passw0rt
+
+###
+GET http://localhost:8080/articles/123
+Authorization: Basic John Passw0rt
+
+###
+POST http://localhost:8080/articles/123
+Authorization: Basic John Passw0rt
+
+

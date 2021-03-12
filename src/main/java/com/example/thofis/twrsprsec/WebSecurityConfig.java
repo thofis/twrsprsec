@@ -2,58 +2,63 @@ package com.example.thofis.twrsprsec;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.provisioning.UserDetailsManager;
+
+import static com.example.thofis.twrsprsec.security.Permission.*;
+import static org.springframework.http.HttpMethod.*;
 
 @EnableWebSecurity
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http
-				.authorizeRequests()
-				.mvcMatchers("/articles/**").hasRole("admin")
-				.mvcMatchers("/orders/**").hasRole("user")
-				.mvcMatchers("hello").permitAll()
-				.anyRequest().denyAll()
-				.and()
-				.httpBasic();
-	}
 
-	@Override
-	public void configure(WebSecurity web) throws Exception {
-		web.debug(true);
-	}
 
-	@Bean
-	public UserDetailsManager userDetailsManager() {
-		InMemoryUserDetailsManager inMemoryUserDetailsManager = new InMemoryUserDetailsManager();
-		inMemoryUserDetailsManager.createUser(User
-				.builder()
-				.username("Thomas")
-				.password("Passw0rt")
-				.roles("admin", "user")
-				.build());
-		inMemoryUserDetailsManager.createUser(User
-				.builder()
-				.username("John")
-				.password("Passw0rt")
-				.roles("user")
-				.build());
-		return inMemoryUserDetailsManager;
-	}
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    // @formatter:off
+    http
+        .authorizeRequests()
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return NoOpPasswordEncoder.getInstance();
-	}
+        .mvcMatchers(GET, "/articles/**").hasAuthority(READ_ARTICLE.name())
+        .mvcMatchers(POST, "/articles/**").hasAuthority(CREATE_ARTICLE.name())
+        .mvcMatchers(PUT, "/articles/**").hasAuthority(WRITE_ARTICLE.name())
+        .mvcMatchers(DELETE, "/articles/**").hasAuthority(DELETE_ARTICLE.name())
+
+        .mvcMatchers(GET, "/orders/**").hasAuthority(READ_ORDER.name())
+        .mvcMatchers(POST, "/orders/**").hasAuthority(CREATE_ORDER.name())
+        .mvcMatchers(PUT, "/orders/**").hasAuthority(WRITE_ORDER.name())
+        .mvcMatchers(DELETE, "/orders/**").hasAuthority(DELETE_ORDER.name())
+
+        .mvcMatchers("/hello").permitAll()
+
+        .mvcMatchers("/h2-console/**").permitAll()
+        .mvcMatchers("/").permitAll()
+
+        .anyRequest().denyAll()
+        .and()
+        .httpBasic();
+
+      http.csrf()
+          .disable();
+      http.headers()
+          .frameOptions()
+          .disable();
+    // @formatter:on
+  }
+
+  @Override
+  public void configure(WebSecurity web) throws Exception {
+    web.debug(true);
+  }
+
+
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return NoOpPasswordEncoder.getInstance();
+  }
 
 }

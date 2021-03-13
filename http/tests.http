@@ -38,4 +38,9 @@ Authorization: Basic John Passw0rt
 POST http://localhost:8080/articles/123
 Authorization: Basic John Passw0rt
 
+###
+POST http://localhost:8080/login?username=Thomas&password=Passw0rt
 
+###
+GET http://localhost:8080/hello
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJUaG9tYXMiLCJhdWQiOiJ0d3JzcHJzZWMiLCJzdWIiOiJUaG9tYXMiLCJleHAiOjE2MTU2ODA0OTZ9.Y9HT6TWGXJ5n-3LPdZGh_SXYW488oWkl1SFkj7ujyZTDHrIl4vGXOssjnO8TAu6tTPIJEnkoxI1JvjoUg_gKTw

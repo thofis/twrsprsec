@@ -10,7 +10,8 @@ public enum Permission implements GrantedAuthority {
   READ_ARTICLE,
   WRITE_ARTICLE,
   CREATE_ARTICLE,
-  DELETE_ARTICLE;
+  DELETE_ARTICLE,
+  PROCESS_HELLO;
 
   @Override
   public String getAuthority() {

@@ -1,5 +1,12 @@
 GET http://localhost:8080/hello
-Accept: application/json
+
+###
+GET http://localhost:8080/hello
+Authorization: Basic John Passw0rt
+
+###
+GET http://localhost:8080/hello
+Authorization: Basic Thomas Passw0rt
 
 ###
 GET http://localhost:8080/articles/123

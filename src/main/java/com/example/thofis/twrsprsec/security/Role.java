@@ -30,13 +30,8 @@ public enum Role {
 
   private EnumSet<Permission> permissions = EnumSet.noneOf(Permission.class);
 
-  public boolean hasPermission(Permission permission) {
-    return permissions.contains(permission);
-  }
-
   public EnumSet<Permission> getPermissions() {
     return permissions;
   }
-
 
 }

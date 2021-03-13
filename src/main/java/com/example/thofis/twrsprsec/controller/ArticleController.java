@@ -1,21 +1,36 @@
 package com.example.thofis.twrsprsec.controller;
 
+import com.example.thofis.twrsprsec.service.ArticleService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.security.Principal;
 import java.util.Objects;
 
 @RestController
 @RequestMapping("/articles")
 @Slf4j
+@RequiredArgsConstructor
 public class ArticleController {
 
+  private final UserDetailsService userDetailsService;
+
+  private final ArticleService articleService;
 
   @GetMapping("/{article_id}")
-  public String getArticle(@PathVariable("article_id") String articleId) {
+  public String getArticle(@PathVariable("article_id") String articleId, Principal principal) {
     Objects.requireNonNull(articleId);
+
+    UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
+    log.info("authorities of user {} are : {}", userDetails.getUsername(), userDetails.getAuthorities().toString());
+
+    articleService.readArticle(articleId);
+
     log.info("loading article with id: {}", articleId);
     return articleId;
   }

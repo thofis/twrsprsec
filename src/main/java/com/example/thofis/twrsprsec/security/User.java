@@ -1,9 +1,6 @@
 package com.example.thofis.twrsprsec.security;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -20,6 +17,7 @@ import static javax.persistence.FetchType.EAGER;
 @AllArgsConstructor
 @Entity
 @Builder
+@ToString
 @Table(name = "sec_user")
 public class User implements UserDetails {
   @Id
@@ -28,18 +26,18 @@ public class User implements UserDetails {
 
   @OneToMany(cascade = ALL, fetch = EAGER)
   @JoinColumn(name = "user", nullable = false)
-  private Set<PersistentRole> roles = new HashSet<>();
+  private Set<UserRole> roles = new HashSet<>();
 
   @OneToMany(cascade = ALL, fetch = EAGER)
   @JoinColumn(name = "user", nullable = false)
-  private Set<PersistentPermission> permissions = new HashSet<>();
+  private Set<UserPermission> permissions = new HashSet<>();
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     Set<Permission> authorities = new HashSet<>();
-    roles.forEach(persistentRole -> authorities.addAll(persistentRole.getRole()
-                                                                     .getPermissions()));
-    permissions.forEach(persistentPermission -> authorities.add(persistentPermission.getPermission()));
+    roles.forEach(userRole -> authorities.addAll(userRole.getRole()
+                                                         .getPermissions()));
+    permissions.forEach(userPermission -> authorities.add(userPermission.getPermission()));
     return authorities;
   }
 

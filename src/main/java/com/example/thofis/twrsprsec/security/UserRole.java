@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "sec_permission")
-public class PersistentRole {
+public class UserRole {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   long id;
@@ -17,10 +17,10 @@ public class PersistentRole {
   @Enumerated(EnumType.STRING)
   private Role role;
 
-  public static PersistentRole fromRole(Role role) {
-    PersistentRole persistentRole = new PersistentRole();
-    persistentRole.setRole(role);
-    return persistentRole;
+  public static UserRole fromRole(Role role) {
+    UserRole userRole = new UserRole();
+    userRole.setRole(role);
+    return userRole;
   }
 
 }

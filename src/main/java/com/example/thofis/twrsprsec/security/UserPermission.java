@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "sec_role")
-public class PersistentPermission {
+public class UserPermission {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   long id;
@@ -18,9 +18,9 @@ public class PersistentPermission {
   private Permission permission;
 
 
-  public static PersistentPermission fromPermission(Permission permission) {
-    PersistentPermission persistentPermission = new PersistentPermission();
-    persistentPermission.setPermission(permission);
-    return persistentPermission;
+  public static UserPermission fromPermission(Permission permission) {
+    UserPermission userPermission = new UserPermission();
+    userPermission.setPermission(permission);
+    return userPermission;
   }
 }

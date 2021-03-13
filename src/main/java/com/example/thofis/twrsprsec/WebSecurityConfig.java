@@ -33,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .mvcMatchers(PUT, "/orders/**").hasAuthority(WRITE_ORDER.name())
         .mvcMatchers(DELETE, "/orders/**").hasAuthority(DELETE_ORDER.name())
 
-        .mvcMatchers("/hello").permitAll()
+        .mvcMatchers("/hello").authenticated()
 
         .mvcMatchers("/h2-console/**").permitAll()
         .mvcMatchers("/").permitAll()

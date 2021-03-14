@@ -6,6 +6,7 @@ import com.example.thofis.twrsprsec.security.JwtConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -13,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
 import static com.example.thofis.twrsprsec.security.Permission.*;
 import static org.springframework.http.HttpMethod.*;
@@ -38,7 +40,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                                                jwtConfiguration.getSecret(),
                                                jwtConfiguration.getType()))
         .addFilter(new JwtAuthorizationFilter(authenticationManager(),
-                                              userDetailsService,
                                               jwtConfiguration.getAudience(),
                                               jwtConfiguration.getIssuer(),
                                               jwtConfiguration.getSecret(),
@@ -61,11 +62,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .mvcMatchers("/h2-console/**").permitAll()
         .mvcMatchers("/").permitAll()
 
-        .anyRequest().denyAll()
-
-        .and()
+        .anyRequest().denyAll();
 //        .httpBasic();
 
+        http.exceptionHandling().authenticationEntryPoint(unauthorizedEntryPoint());
+
+        http
         .sessionManagement()
         .sessionCreationPolicy(STATELESS);
 
@@ -86,4 +88,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     return NoOpPasswordEncoder.getInstance();
   }
 
+  @Bean
+  public HttpStatusEntryPoint unauthorizedEntryPoint() {
+
+    return new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED);
+  }
 }

@@ -6,6 +6,7 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.crypto.SecretKey;
@@ -17,6 +18,9 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -39,18 +43,30 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
   @Override
   protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
     User user = (User) authResult.getPrincipal();
+    // @formatter:off
+    String authorities = authResult.getAuthorities()
+              .stream()
+              .map(GrantedAuthority::getAuthority)
+              .collect(Collectors.joining("|"));
+    // @formatter:on
+
+    Map<String, Object> claims = new HashMap<>();
+    claims.put("subject", user.getUsername());
+    claims.put("audience", jwtAudience);
+    claims.put("issuer", jwtIssuer);
+    claims.put("authorities", authorities);
+
     SecretKey secretKey = Keys.hmacShaKeyFor(jwtSecret.getBytes());
     // @formatter:off
     String token = Jwts.builder()
                        .signWith(secretKey, SignatureAlgorithm.HS512)
                        .setHeaderParam("typ", jwtType)
-                       .setIssuer(jwtIssuer)
-                       .setAudience(jwtAudience)
-                       .setSubject(user.getUsername())
-                       .setExpiration(Timestamp.valueOf(LocalDateTime.now()
-                                                                     .plus(Duration.ofHours(2))))
+                       .setClaims(claims)
+                       .setExpiration(Timestamp.valueOf(LocalDateTime.now().plus(Duration.ofHours(2))))
                        .compact();
     // @formatter:on
     response.addHeader(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", token));
   }
+
 }
+

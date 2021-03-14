@@ -8,16 +8,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.util.ObjectUtils;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
+import static java.util.stream.Collectors.toSet;
 
 
 @Slf4j
@@ -28,16 +33,14 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
   private final String jwtType;
   private final String jwtAudience;
 
-  private final UserDetailsService userDetailsService;
 
   public JwtAuthorizationFilter(AuthenticationManager authenticationManager,
-                                UserDetailsService userDetailsService, String jwtAudience, String jwtIssuer, String jwtSecret, String jwtType) {
+                                String jwtAudience, String jwtIssuer, String jwtSecret, String jwtType) {
     super(authenticationManager);
     this.jwtAudience = jwtAudience;
     this.jwtIssuer = jwtIssuer;
     this.jwtSecret = jwtSecret;
     this.jwtType = jwtType;
-    this.userDetailsService = userDetailsService;
   }
 
   @Override
@@ -60,17 +63,30 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         Jws<Claims> claimsJws = Jwts.parser()
                                     .setSigningKey(jwtSecret.getBytes())
                                     .parseClaimsJws(claims);
-        String username = claimsJws.getBody()
-                                   .getSubject();
+        String username = (String) claimsJws.getBody()
+                                            .get("subject");
         if ("".equals(username) || username == null) {
           return null;
         }
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        return new UsernamePasswordAuthenticationToken(username, null, userDetails.getAuthorities());
+        Collection<SimpleGrantedAuthority> authorities = authoritiesFromString((String) claimsJws.getBody()
+                                                                                                 .get("authorities"));
+        // authorities could alternatively retrieved from db (findByUsername)
+        return new UsernamePasswordAuthenticationToken(username, null, authorities);
       } catch (JwtException e) {
         log.warn("Some exception: {} failed : {}", token, e.getMessage());
       }
     }
     return null;
+  }
+
+
+  private Collection<SimpleGrantedAuthority> authoritiesFromString(String authorititiesString) {
+    if (ObjectUtils.isEmpty(authorititiesString)) {
+      return Collections.emptySet();
+    }
+
+    return Arrays.stream(authorititiesString.split("\\|"))
+                 .map(SimpleGrantedAuthority::new)
+                 .collect(toSet());
   }
 }

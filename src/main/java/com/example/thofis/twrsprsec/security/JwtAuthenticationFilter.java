@@ -3,6 +3,7 @@ package com.example.thofis.twrsprsec.security;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
@@ -22,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
   private String jwtAudience;
@@ -50,6 +52,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
               .collect(Collectors.joining("|"));
     // @formatter:on
 
+    log.info("successfully authenticated as {} with authorities: {}", user.getUsername(), user.getAuthorities());
+
     Map<String, Object> claims = new HashMap<>();
     claims.put("subject", user.getUsername());
     claims.put("audience", jwtAudience);
@@ -65,6 +69,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                        .setExpiration(Timestamp.valueOf(LocalDateTime.now().plus(Duration.ofHours(2))))
                        .compact();
     // @formatter:on
+    log.info("sending bearer token as AUTHORIZATION header: {}", token);
     response.addHeader(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", token));
   }
 

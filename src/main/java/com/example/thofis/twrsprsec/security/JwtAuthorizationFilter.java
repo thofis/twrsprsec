@@ -58,6 +58,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
   private UsernamePasswordAuthenticationToken parseToken(HttpServletRequest request) {
     String token = request.getHeader(HttpHeaders.AUTHORIZATION);
     if (token != null && token.startsWith("Bearer ")) {
+      log.info("processing bearer token: {}", token);
       String claims = token.replace("Bearer ", "");
       try {
         Jws<Claims> claimsJws = Jwts.parser()
@@ -70,6 +71,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         }
         Collection<SimpleGrantedAuthority> authorities = authoritiesFromString((String) claimsJws.getBody()
                                                                                                  .get("authorities"));
+        log.info("authorizing user: {} with authorities: {}", username, authorities);
         // authorities could alternatively retrieved from db (findByUsername)
         return new UsernamePasswordAuthenticationToken(username, null, authorities);
       } catch (JwtException e) {

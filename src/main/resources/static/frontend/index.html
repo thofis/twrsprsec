@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Dummy-Frontend</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="grid-container">
+    <div class="header">
+        <h1>Dummy-Frontend</h1>
+    </div>
+    <div class="login">
+        <form class="form" id="form">
+            <h3>Login/Logout</h3>
+            <div class="form-control">
+                <label for="username">Username</label>
+                <input type="text" name="" id="username" placeholder="Enter username" autocomplete="username">
+<!--                <small>Error message</small>-->
+            </div>
+            <div class="form-control">
+                <label for="password">Password</label>
+                <input type="password" name="" id="password" placeholder="Enter password" autocomplete="new-password">
+<!--                <small>Error message</small>-->
+            </div>
+            <button id="btn_login">Login</button>
+            <button id="btn_rest">Perform Rest-Calls</button>
+        </form>
+    </div>
+    <div class="login-data">
+        <h3>JWT data</h3>
+        <table>
+            <tr>
+                <td>Raw JWT (Base64):</td>
+                <td id="raw-jwt"></td>
+            </tr>
+            <tr>
+                <td>Header:</td>
+                <td id="jwt-header"></td>
+            </tr>
+            <tr>
+                <td>Payload:</td>
+                <td id="jwt-payload"></td>
+            </tr>
+            <tr>
+                <td>Signature (Base64):</td>
+                <td id="jwt-signature"></td>
+            </tr>
+        </table>
+    </div>
+    <div class="hello">
+        <h3>GET /hello</h3>
+        <div id="hello" class="status"></div>
+    </div>
+    <div class="hello1">
+    </div>
+    <div class="hello2">
+    </div>
+    <div class="hello3">
+    </div>
+    <div class="get-article">
+        <h3>GET /articles</h3>
+        <div id="get-article" class="status"></div>
+    </div>
+    <div class="post-article">
+        <h3>POST /articles</h3>
+        <div id="post-article" class="status"></div>
+    </div>
+    <div class="delete-article">
+        <h3>DELETE /articles</h3>
+        <div id="delete-article" class="status"></div>
+    </div>
+    <div class="put-article">
+        <h3>PUT /articles</h3>
+        <div id="put-article" class="status"></div>
+    </div>
+    <div class="get-order">
+        <h3>GET /orders</h3>
+        <div id="get-order" class="status"></div>
+    </div>
+    <div class="post-order">
+        <h3>POST /orders</h3>
+        <div id="post-order" class="status"></div>
+    </div>
+    <div class="delete-order">
+        <h3>DELETE /orders</h3>
+        <div id="delete-order" class="status"></div>
+    </div>
+    <div class="put-order">
+        <h3>PUT /orders</h3>
+        <div id="put-order" class="status"></div>
+    </div>
+
+</div>
+<script src="script.js"></script>
+</body>
+</html>

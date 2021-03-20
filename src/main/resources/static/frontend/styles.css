@@ -1,0 +1,117 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: cornsilk;
+    font-family: "DejaVu Sans", sans-serif;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+h2 {
+    text-align: center;
+}
+
+.grid-container {
+    margin: 1em;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: .3fr 2fr 1fr 1fr 1fr;
+    grid-template-areas:
+    "header header header header"
+    "login login-data login-data login-data"
+    "hello hello2 hello3 hello4"
+    "get-article post-article delete-article put-article"
+    "get-order post-order delete-order put-order";
+    gap: 0px 0px;
+}
+
+.header {
+    grid-area: header;
+    text-align: center;
+}
+
+.login { grid-area: login; }
+
+.login-data {
+    margin: 0 20px;
+    grid-area: login-data;
+}
+
+.login-data td {
+    padding: 0 0 20px 20px;
+    overflow-wrap: anywhere;
+}
+
+.login-data td:first-child {
+    overflow-wrap: break-word;
+}
+
+.hello { grid-area: hello; }
+
+.hello1 { grid-area: hello1; }
+
+.hello2 { grid-area: hello2; }
+
+.hello3 { grid-area: hello3; }
+
+.get-order { grid-area: get-order; }
+
+.post-order { grid-area: post-order; }
+
+.delete-order { grid-area: delete-order; }
+
+.put-order { grid-area: put-order; }
+
+.get-article { grid-area: get-article; }
+
+.post-article { grid-area: post-article; }
+
+.delete-article { grid-area: delete-article; }
+
+.put-article { grid-area: put-article; }
+
+.form-control label {
+    display: block;
+    margin-bottom: 5px;
+}
+.form-control {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    position: relative;
+}
+
+.form-control input {
+    border: 2px solid #f0f0f0;
+    border-radius: 4px;
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.form button {
+    cursor: pointer;
+    background-color: #3498db;
+    border: 2px solid #3498db;
+    border-radius: 4px;
+    color: white;
+    display: block;
+    font-size: 16px;
+    padding: 10px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.status {
+    text-align: center;
+    font-weight: bold;
+}
+
+.status.error {
+    color: orangered;
+}
+

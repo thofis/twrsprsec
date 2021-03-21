@@ -1,8 +1,11 @@
 package com.example.thofis.twrsprsec;
 
+import java.util.List;
+
 import com.example.thofis.twrsprsec.security.JwtAuthenticationFilter;
 import com.example.thofis.twrsprsec.security.JwtAuthorizationFilter;
 import com.example.thofis.twrsprsec.security.JwtConfiguration;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,13 +14,23 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.web.cors.CorsConfiguration;
 
-import static com.example.thofis.twrsprsec.security.Permission.*;
-import static org.springframework.http.HttpMethod.*;
+import static com.example.thofis.twrsprsec.security.Permission.CREATE_ARTICLE;
+import static com.example.thofis.twrsprsec.security.Permission.CREATE_ORDER;
+import static com.example.thofis.twrsprsec.security.Permission.DELETE_ARTICLE;
+import static com.example.thofis.twrsprsec.security.Permission.DELETE_ORDER;
+import static com.example.thofis.twrsprsec.security.Permission.READ_ARTICLE;
+import static com.example.thofis.twrsprsec.security.Permission.READ_ORDER;
+import static com.example.thofis.twrsprsec.security.Permission.WRITE_ARTICLE;
+import static com.example.thofis.twrsprsec.security.Permission.WRITE_ORDER;
+import static org.springframework.http.HttpMethod.DELETE;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.PUT;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @EnableWebSecurity
@@ -26,9 +39,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
   private JwtConfiguration jwtConfiguration;
-
-  @Autowired
-  private UserDetailsService userDetailsService;
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
@@ -59,8 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .mvcMatchers("/hello").authenticated()
 //        .mvcMatchers(POST,"/api/login").permitAll()
 
-        .mvcMatchers("/h2-console/**").permitAll()
-        .mvcMatchers("/").permitAll()
+        .mvcMatchers("/", "/h2-console/**", "/frontend/**").permitAll()
 
         .anyRequest().denyAll();
 //        .httpBasic();
@@ -71,7 +80,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .sessionManagement()
         .sessionCreationPolicy(STATELESS);
 
-        http.cors().disable();
+        http.cors().configurationSource(request -> {
+			var cors = new CorsConfiguration();
+			cors.setAllowedOrigins(List.of("http://localhost:9000"));
+			cors.setAllowedMethods(List.of("GET","POST", "PUT", "DELETE", "OPTIONS"));
+			cors.setAllowedHeaders(List.of("*"));
+			return cors;
+		});
         http.csrf().disable();
         http.headers().frameOptions().disable();
     // @formatter:on

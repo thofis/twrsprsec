@@ -49,8 +49,6 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     if (authenticationToken != null) {
       SecurityContextHolder.getContext()
                            .setAuthentication(authenticationToken);
-    } else {
-      SecurityContextHolder.clearContext();
     }
     chain.doFilter(request, response);
   }

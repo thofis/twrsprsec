@@ -1,13 +1,24 @@
 package com.example.thofis.twrsprsec.security;
 
-import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.EAGER;
@@ -20,44 +31,54 @@ import static javax.persistence.FetchType.EAGER;
 @ToString
 @Table(name = "sec_user")
 public class User implements UserDetails {
-  @Id
-  private String username;
-  private String password;
 
-  @OneToMany(cascade = ALL, fetch = EAGER)
-  @JoinColumn(name = "user", nullable = false)
-  private Set<UserRole> roles = new HashSet<>();
+	public static final String ROLE_PREFIX = "ROLE_";
 
-  @OneToMany(cascade = ALL, fetch = EAGER)
-  @JoinColumn(name = "user", nullable = false)
-  private Set<UserPermission> permissions = new HashSet<>();
+	@Id
+	private String username;
 
-  @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    Set<Permission> authorities = new HashSet<>();
-    roles.forEach(userRole -> authorities.addAll(userRole.getRole()
-                                                         .getPermissions()));
-    permissions.forEach(userPermission -> authorities.add(userPermission.getPermission()));
-    return authorities;
-  }
+	private String password;
 
-  @Override
-  public boolean isAccountNonExpired() {
-    return true;
-  }
+	@OneToMany(cascade = ALL, fetch = EAGER)
+	@JoinColumn(name = "user", nullable = false)
+	private Set<UserRole> roles = new HashSet<>();
 
-  @Override
-  public boolean isAccountNonLocked() {
-    return true;
-  }
+	@OneToMany(cascade = ALL, fetch = EAGER)
+	@JoinColumn(name = "user", nullable = false)
+	private Set<UserPermission> permissions = new HashSet<>();
 
-  @Override
-  public boolean isCredentialsNonExpired() {
-    return true;
-  }
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		Set<GrantedAuthority> authorities = new HashSet<>();
+		roles.forEach(userRole -> {
+			// add the role itself as an authority
+			authorities.add(userRole.getRole());
+			// add all permissions included in the role
+			authorities.addAll(userRole.getRole()
+					.getPermissions());
+		});
+		// finally add individual additional permissions for the user
+		permissions.forEach(userPermission -> authorities.add(userPermission.getPermission()));
+		return authorities;
+	}
 
-  @Override
-  public boolean isEnabled() {
-    return true;
-  }
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
 }

@@ -8,7 +8,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "sec_role")
+@Table(name = "sec_permission")
 public class UserPermission {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

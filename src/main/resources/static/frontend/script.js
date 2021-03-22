@@ -123,6 +123,8 @@ function performRestCalls(event) {
     }
 
     performFetch('get', 'hello').then(response => populateResponseInUI(response, 'hello'));
+    performFetch('get', 'hello-admin').then(response => populateResponseInUI(response, 'hello-admin'));
+    performFetch('get', 'hello-user').then(response => populateResponseInUI(response, 'hello-user'));
 
     performFetch('get', 'articles', 123).then(response => populateResponseInUI(response, 'get-article'));
     performFetch('post', 'articles').then(response => populateResponseInUI(response, 'post-article'));

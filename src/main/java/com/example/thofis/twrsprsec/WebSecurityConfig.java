@@ -5,6 +5,7 @@ import java.util.List;
 import com.example.thofis.twrsprsec.security.JwtAuthenticationFilter;
 import com.example.thofis.twrsprsec.security.JwtAuthorizationFilter;
 import com.example.thofis.twrsprsec.security.JwtConfiguration;
+import com.example.thofis.twrsprsec.security.Role;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +28,7 @@ import static com.example.thofis.twrsprsec.security.Permission.READ_ARTICLE;
 import static com.example.thofis.twrsprsec.security.Permission.READ_ORDER;
 import static com.example.thofis.twrsprsec.security.Permission.WRITE_ARTICLE;
 import static com.example.thofis.twrsprsec.security.Permission.WRITE_ORDER;
+import static com.example.thofis.twrsprsec.security.Role.*;
 import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
@@ -65,6 +67,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .mvcMatchers(POST, "/orders/**").hasAuthority(CREATE_ORDER.name())
         .mvcMatchers(PUT, "/orders/**").hasAuthority(WRITE_ORDER.name())
         .mvcMatchers(DELETE, "/orders/**").hasAuthority(DELETE_ORDER.name())
+
+		.mvcMatchers(GET, "/hello-admin").hasRole(ADMIN.name())
+		.mvcMatchers(GET, "/hello-user").hasRole(USER.name())
 
         .mvcMatchers("/hello").authenticated()
 //        .mvcMatchers(POST,"/api/login").permitAll()

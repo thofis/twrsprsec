@@ -23,7 +23,7 @@ h2 {
     grid-template-areas:
     "header header header header"
     "login login-data login-data login-data"
-    "hello hello2 hello3 hello4"
+    "hello hello-admin hello-user unused"
     "get-article post-article delete-article put-article"
     "get-order post-order delete-order put-order";
     gap: 0px 0px;
@@ -109,9 +109,25 @@ h2 {
 .status {
     text-align: center;
     font-weight: bold;
+    margin-top: 1em;
 }
 
 .status.error {
     color: orangered;
+}
+
+.rest-result {
+    border: 2px solid black;
+    border-radius: 5px;
+    margin: 1em;
+}
+
+.rest-result h3 {
+    background-color: white;
+    display: block;
+    width: 100%;
+    padding: .5em 1em;
+    margin: 0 0 1em 0;
+    border-bottom: 1px solid black;
 }
 

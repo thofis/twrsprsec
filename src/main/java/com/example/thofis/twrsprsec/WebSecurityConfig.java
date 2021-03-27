@@ -1,12 +1,8 @@
 package com.example.thofis.twrsprsec;
 
-import java.util.List;
-
 import com.example.thofis.twrsprsec.security.JwtAuthenticationFilter;
 import com.example.thofis.twrsprsec.security.JwtAuthorizationFilter;
 import com.example.thofis.twrsprsec.security.JwtConfiguration;
-import com.example.thofis.twrsprsec.security.Role;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,24 +11,17 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.web.cors.CorsConfiguration;
 
-import static com.example.thofis.twrsprsec.security.Permission.CREATE_ARTICLE;
-import static com.example.thofis.twrsprsec.security.Permission.CREATE_ORDER;
-import static com.example.thofis.twrsprsec.security.Permission.DELETE_ARTICLE;
-import static com.example.thofis.twrsprsec.security.Permission.DELETE_ORDER;
-import static com.example.thofis.twrsprsec.security.Permission.READ_ARTICLE;
-import static com.example.thofis.twrsprsec.security.Permission.READ_ORDER;
-import static com.example.thofis.twrsprsec.security.Permission.WRITE_ARTICLE;
-import static com.example.thofis.twrsprsec.security.Permission.WRITE_ORDER;
-import static com.example.thofis.twrsprsec.security.Role.*;
-import static org.springframework.http.HttpMethod.DELETE;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.http.HttpMethod.PUT;
+import java.util.List;
+
+import static com.example.thofis.twrsprsec.security.Permission.*;
+import static com.example.thofis.twrsprsec.security.Role.ADMIN;
+import static com.example.thofis.twrsprsec.security.Role.USER;
+import static org.springframework.http.HttpMethod.*;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @EnableWebSecurity
@@ -105,12 +94,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Bean
   public PasswordEncoder passwordEncoder() {
-    return NoOpPasswordEncoder.getInstance();
+    return PasswordEncoderFactories.createDelegatingPasswordEncoder();
   }
 
   @Bean
   public HttpStatusEntryPoint unauthorizedEntryPoint() {
-
     return new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED);
   }
 }

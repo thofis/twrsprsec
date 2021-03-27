@@ -7,6 +7,7 @@ import com.example.thofis.twrsprsec.security.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -25,10 +26,12 @@ public class UserPopulator implements ApplicationRunner {
 
   private final UserRepository userRepository;
 
+  private final PasswordEncoder passwordEncoder;
+
   @Override
   public void run(ApplicationArguments args) throws Exception {
-    userRepository.save(newUser("Thomas", "Passw0rt", Set.of(fromRole(USER), fromRole(ADMIN)), Set.of(fromPermission(PROCESS_HELLO))));
-    userRepository.save(newUser("John", "Passw0rt", Set.of(fromRole(USER)), Set.of(fromPermission(READ_ARTICLE))));
+    userRepository.save(newUser("Thomas", passwordEncoder.encode("Passw0rt"), Set.of(fromRole(USER), fromRole(ADMIN)), Set.of(fromPermission(PROCESS_HELLO))));
+    userRepository.save(newUser("John", passwordEncoder.encode("Passw0rt"), Set.of(fromRole(USER)), Set.of(fromPermission(READ_ARTICLE))));
   }
 
   private User newUser(String username, String password, Set<UserRole> roles, Set<UserPermission> permissions) {

@@ -3,17 +3,12 @@ package com.example.thofis.twrsprsec;
 import com.example.thofis.twrsprsec.security.Permission;
 import com.example.thofis.twrsprsec.service.HelloService;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
@@ -42,8 +37,8 @@ class TwrsprsecApplicationTests {
 	}
 
 	@Test
-		// sets up a security context with a mocked user
-  @WithMockUser(username = "Thomas", password = "Passw0rt", authorities = {"PROCESS_HELLO"})
+	// sets up a security context with a mocked user
+	@WithMockUser(username = "Thomas", password = "Passw0rt", authorities = { "PROCESS_HELLO" })
 	void helloAuthenticated() {
 		// how to mock authentication without @WithMockUser
 //		UsernamePasswordAuthenticationToken principal = new UsernamePasswordAuthenticationToken("Thomas", "Passw0rt");
@@ -59,7 +54,7 @@ class TwrsprsecApplicationTests {
 
 	// sets up a security context with a mocked user
 	@Test
-	@WithMockUser(username = "Thomas", password = "Passw0rt", authorities = {"PROCESS_HELLO"})
+	@WithMockUser(username = "Thomas", password = "Passw0rt", authorities = { "PROCESS_HELLO" })
 	void helloAuthenticatedWithThomas() {
 		assertDoesNotThrow(() -> {
 			mockMvc.perform(get("/hello"))
@@ -75,7 +70,7 @@ class TwrsprsecApplicationTests {
 			mockMvc.perform(get("/hello")
 					.with(SecurityMockMvcRequestPostProcessors.user("Thomas")
 							.password("Passw0rt")
-					.authorities(Permission.PROCESS_HELLO)))
+							.authorities(Permission.PROCESS_HELLO)))
 					.andExpect(status().isOk());
 		});
 	}

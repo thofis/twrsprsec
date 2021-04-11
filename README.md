@@ -7,12 +7,14 @@ with [Spring Security](https://docs.spring.io/spring-security/site/docs/5.4.5/re
 a [Spring Boot](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) project. There is also a
 official [Getting Started Guide](https://spring.io/guides/gs/securing-web/) for such an application,
 
-An H2 in memory database is used over JPA to persist users with their roles and permissions. H2-console allows to
+An H2-in-memory database is used over JPA to persist users with their roles and permissions. H2-console allows to
 connect to this database (configured in `application.properties`)
 
 * JDBC URL: jdbc:h2:mem
 * User: sa
-* Password: sa if you run the following statements there, you get an overview of all users, roles and permissions:
+* Password: sa
+
+If you run the following statements there, you get an overview of all users, roles and permissions:
 
 ```
 SELECT * FROM SEC_USER;
@@ -36,15 +38,15 @@ a [`User`](https://github.com/thofis/twrsprsec/blob/main/src/main/java/com/examp
 has a collection of roles and a collection of permissions.
 
 Spring Security expects the user model to conform to the interface `UserDetails` with its authorities. Therefore roles
-and permissions are mapped to authorities. As a role is itself a collection of permissions, the permissions of all roles
-and the individual permissions of a user are aggregated to build the authorities.
+and permissions are mapped to authorities. As a role is itself a collection of permissions, the roles of a user, the permissions of those roles
+and the individual permissions of a user are aggregated to build the authorities used in code. 
+Permissions can be used there fore fine granular authorization, while roles are useful for more generic scenarios.
 
 ### Security Configuration
 
 Most of the security related configuration is done in the
 class [WebSecurityConfig](https://github.com/thofis/twrsprsec/blob/main/src/main/java/com/example/thofis/twrsprsec/WebSecurityConfig.java)
 . It configures:
-
 * endpoint related authorization
 * additional custom filters for authentication and authorization by JWT.
 * customized exception handling

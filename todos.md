@@ -1,5 +1,2 @@
-* permission and roles as enums/enumsets
-* custom user model with set of permissions and roles
-* persisting custom user model in DB
-* jwt support (https://grobmeier.solutions/de/spring-security-5-jwt-basic-auth.html)
-    * store authorities in JWT during authentication to avoid accessing db on every authorization
+* token refresh mechanism
+* store jwt in http-only-cookie (+csrf protection) instead of session-storage (https://stormpath.com/blog/where-to-store-your-jwts-cookies-vs-html5-web-storage)

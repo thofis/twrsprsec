@@ -20,13 +20,14 @@ public class ArticleService {
   private final UserRepository userRepository;
 
 
-  public void readArticle(String id) {
+  public String readArticle(String id) {
     Authentication authentication = authenticationFacade.getAuthentication();
     log.info("retrieving Authentication with SecurityContextHolder. Type is {}", authentication.getClass()
                                                                                                .getSimpleName());
     log.info("authentication data: {}", authentication);
     Optional<User> authenticatedUser = userRepository.findById(authentication.getName());
     log.info("authenticated user: {}", authenticatedUser);
+    return id;
   }
 
 }

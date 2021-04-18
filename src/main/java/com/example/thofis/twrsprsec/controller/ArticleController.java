@@ -27,12 +27,13 @@ public class ArticleController {
     Objects.requireNonNull(articleId);
 
     UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
-    log.info("authorities of user {} are : {}", userDetails.getUsername(), userDetails.getAuthorities().toString());
+    log.info("authorities of user {} are : {}", userDetails.getUsername(), userDetails.getAuthorities()
+                                                                                      .toString());
 
-    articleService.readArticle(articleId);
+    String id = articleService.readArticle(articleId);
 
-    log.info("loading article with id: {}", articleId);
-    return articleId;
+    log.info("loading article with id: {}", id);
+    return id;
   }
 
   @PostMapping

@@ -1,12 +1,19 @@
 package com.example.thofis.twrsprsec.security;
 
-import org.springframework.security.core.GrantedAuthority;
-
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.example.thofis.twrsprsec.security.Permission.*;
+import org.springframework.security.core.GrantedAuthority;
+
+import static com.example.thofis.twrsprsec.security.Permission.CREATE_ARTICLE;
+import static com.example.thofis.twrsprsec.security.Permission.CREATE_ORDER;
+import static com.example.thofis.twrsprsec.security.Permission.DELETE_ARTICLE;
+import static com.example.thofis.twrsprsec.security.Permission.DELETE_ORDER;
+import static com.example.thofis.twrsprsec.security.Permission.READ_ARTICLE;
+import static com.example.thofis.twrsprsec.security.Permission.READ_ORDER;
+import static com.example.thofis.twrsprsec.security.Permission.WRITE_ARTICLE;
+import static com.example.thofis.twrsprsec.security.Permission.WRITE_ORDER;
 
 public enum Role implements GrantedAuthority {
   ADMIN(
@@ -26,6 +33,7 @@ public enum Role implements GrantedAuthority {
       DELETE_ORDER
   );
 
+  // spring-security differentiates between role and other authorities with the prefix ROLE_
   public static final String ROLE_PREFIX = "ROLE_";
 
   private Role(Permission... permissions) {

@@ -1,24 +1,25 @@
 package com.example.thofis.twrsprsec.repository;
 
-import com.example.thofis.twrsprsec.security.Role;
-import com.example.thofis.twrsprsec.security.User;
-import com.example.thofis.twrsprsec.security.UserRole;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-
 import java.util.Optional;
 import java.util.Set;
 
-import static org.assertj.core.api.Assertions.*;
+import com.example.thofis.twrsprsec.security.User;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+import static com.example.thofis.twrsprsec.security.Role.USER;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 class UserRepositoryTest {
 
   public static final String TEST_USERNAME = "Tester";
-  @Autowired
+
+	@Autowired
   private UserRepository userRepository;
 
   @BeforeEach
@@ -26,7 +27,7 @@ class UserRepositoryTest {
     User user = User.builder()
                     .username(TEST_USERNAME)
                     .password("RandomPassword123")
-                    .roles(Set.of(UserRole.fromRole(Role.USER)))
+                    .roles(Set.of(USER))
                     .build();
     userRepository.save(user);
   }

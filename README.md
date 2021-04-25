@@ -18,8 +18,8 @@ If you run the following statements there, you get an overview of all users, rol
 
 ```
 SELECT * FROM SEC_USER;
-SELECT * FROM SEC_ROLE;
-SELECT * FROM SEC_PERMISSION;
+SELECT * FROM SEC_USER_ROLES;
+SELECT * FROM SEC_USER_PERMISSIONS;
 ```
 
 A simple HTML-Frontend (no additional Frameworks) is provided to simulate communication with a Single Page Application.
